@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.IO;
 
 namespace ConsoleMessageBox
 {
@@ -23,67 +20,65 @@ namespace ConsoleMessageBox
     {
         static void Main(string[] args)
         {
+            // DEBUG: MessageBox.Show(String.Join(" -|- ", args));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            
+            string header;
             string msg = "";
+            MessageBoxIcon icon;
             string delim = "";
-            string aufrufInfo = "Aufruf-Zähler fehlt!";
-            string countString = "";
-            int aufrufCounter = 0;
+            int aufrufCounter;
+
             if (args.Length < 3)
             {
                 SyntaxAndOut("");
             }
-            countString = args[0];
-            if (!Int32.TryParse(countString, out aufrufCounter))
+            if (!Int32.TryParse(args[0], out aufrufCounter))
             {
                 SyntaxAndOut("Der AufrufCounter ist nicht numerisch!");
             }
             args = args.Skip(3).ToArray();
+            header = "Information";
+            icon = MessageBoxIcon.Information;
             if (aufrufCounter < 0)
             {
-                aufrufInfo = "Das Problem ist behoben. Die ursprüngliche Meldung war:";
+                header = "Entwarnung";
+                msg = "Das Problem ist behoben. Die ursprüngliche Meldung war:";
                 delim = Environment.NewLine;
             }
-            else
-            {
-                //aufrufInfo = countString + ". Warnung";
-                aufrufInfo = "";
-            }
-            msg = aufrufInfo;
             for (int i = 0; i < args.Length - 1; i++)
             {
                 msg += delim + args[i];
                 delim = Environment.NewLine;
             }
-            MessageBoxIcon icon = MessageBoxIcon.Information;
-            if (msg != aufrufInfo) // letzter (User-)Parameter wird zur Überschrift.
+            if (args.Length < 2)
             {
-                string header = args[args.Length - 1];
-                if (aufrufCounter < 0)
-                {
-                    header = "Entwarnung";
-                }
-                if (header.ToUpper().Contains("ERROR") || header.ToUpper().Contains("FEHLER") || header.ToUpper().Contains("EXCEPTION"))
-                {
-                    icon = MessageBoxIcon.Error;
-                }
-                MessageBox.Show(msg.Replace("#", Environment.NewLine), header, MessageBoxButtons.OK, icon);
+                msg += delim + args[0]; // Es wurde nur die Meldung übergeben.
             }
-            else // letzter (User-)Parameter ist die Meldung
+            else
             {
-                if (args.Length > 0)
+                if (aufrufCounter >= 0)
                 {
-                    msg += delim + args[args.Length - 1];
-                    string header = "Information";
-                    if (msg.ToUpper().Contains("ERROR") || msg.ToUpper().Contains("FEHLER") || msg.ToUpper().Contains("EXCEPTION"))
-                    {
-                        icon = MessageBoxIcon.Error;
-                        header = "Fehler";
-                    }
-                    MessageBox.Show(msg.Replace("#", Environment.NewLine), header, MessageBoxButtons.OK, icon);
+                    // letzter (User-)Parameter wird zur Überschrift, wenn keine Entwarnung vorliegt.
+                    header = args[args.Length - 1];
                 }
             }
+            if (header.ToUpper().Contains("ERROR") || header.ToUpper().Contains("FEHLER")
+                || header.ToUpper().Contains("EXCEPTION"))
+            {
+                icon = MessageBoxIcon.Error;
+            }
+            else
+            {
+                if (header.ToUpper().StartsWith("WARN"))
+                {
+                    header = "Warnung";
+                    icon = MessageBoxIcon.Exclamation;
+                }
+            }
+
+            MessageBox.Show(msg.Replace("#", Environment.NewLine), header, MessageBoxButtons.OK, icon);
         }
 
         private static void SyntaxAndOut(string message)
