@@ -1,8 +1,8 @@
 ---------------------------
 
 ---------------------------
-1 -|- Tree 1 -|- Check Escalator -|- Stufe 1 (Run 1) 04.07.2021 14.12.07: MAUSBAER5 False von Check Escalator in Check Escalator -|- Logical: False  -|- Info
-1 "Tree 1" "Check Escalator" "Stufe 1 (Run 1) 04.07.2021 14.12.07: MAUSBAER5 False von Check Escalator in Check Escalator" "Logical: False " "Info"
+1 -|- Tree 1 -|- Check Escalator -|- Stufe 1 (Run 1) 04.07.2021 14.12.07: SERVER False von Check Escalator in Check Escalator -|- Logical: False  -|- Info
+1 "Tree 1" "Check Escalator" "Stufe 1 (Run 1) 04.07.2021 14.12.07: SERVER False von Check Escalator in Check Escalator" "Logical: False " "Info"
 ---------------------------
 OK   
 ---------------------------
@@ -10,8 +10,8 @@ OK
 ---------------------------
 
 ---------------------------
-3 -|- Tree 1 -|- Check Escalator -|- Stufe 2 (Run 3) 04.07.2021 14.12.07: MAUSBAER5 ACHTUNG False von Check Escalator in Check Escalator -|- Logical: False  -|- Warnung
-3 "Tree 1" "Check Escalator" "Stufe 2 (Run 3) 04.07.2021 14.12.07: MAUSBAER5 ACHTUNG False von Check Escalator in Check Escalator" "Logical: False " "Warnung"
+3 -|- Tree 1 -|- Check Escalator -|- Stufe 2 (Run 3) 04.07.2021 14.12.07: SERVER ACHTUNG False von Check Escalator in Check Escalator -|- Logical: False  -|- Warnung
+3 "Tree 1" "Check Escalator" "Stufe 2 (Run 3) 04.07.2021 14.12.07: SERVER ACHTUNG False von Check Escalator in Check Escalator" "Logical: False " "Warnung"
 ---------------------------
 OK   
 ---------------------------
@@ -19,8 +19,8 @@ OK
 ---------------------------
 
 ---------------------------
--5 -|- Tree 1 -|- Check Escalator -|- Stufe 1 (Run 1) 04.07.2021 14.12.07: MAUSBAER5 False von Check Escalator in Check Escalator -|- Logical: False  -|- Info
--5 "Tree 1" "Check Escalator" "Stufe 1 (Run 1) 04.07.2021 14.12.07: MAUSBAER5 False von Check Escalator in Check Escalator" "Logical: False " "Info"
+-5 -|- Tree 1 -|- Check Escalator -|- Stufe 1 (Run 1) 04.07.2021 14.12.07: SERVER False von Check Escalator in Check Escalator -|- Logical: False  -|- Info
+-5 "Tree 1" "Check Escalator" "Stufe 1 (Run 1) 04.07.2021 14.12.07: SERVER False von Check Escalator in Check Escalator" "Logical: False " "Info"
 ---------------------------
 OK   
 ---------------------------
@@ -28,8 +28,8 @@ OK
 ---------------------------
 
 ---------------------------
--5 -|- Tree 1 -|- Check Escalator -|- Stufe 2 (Run 3) 04.07.2021 14.12.07: MAUSBAER5 ACHTUNG False von Check Escalator in Check Escalator -|- Logical: False  -|- Warnung
--5 "Tree 1" "Check Escalator" "Stufe 2 (Run 3) 04.07.2021 14.12.07: MAUSBAER5 ACHTUNG False von Check Escalator in Check Escalator" "Logical: False " "Warnung"
+-5 -|- Tree 1 -|- Check Escalator -|- Stufe 2 (Run 3) 04.07.2021 14.12.07: SERVER ACHTUNG False von Check Escalator in Check Escalator -|- Logical: False  -|- Warnung
+-5 "Tree 1" "Check Escalator" "Stufe 2 (Run 3) 04.07.2021 14.12.07: SERVER ACHTUNG False von Check Escalator in Check Escalator" "Logical: False " "Warnung"
 ---------------------------
 OK   
 ---------------------------

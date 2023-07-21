@@ -1,13 +1,9 @@
-ï»¿using System;
-using System.Linq;
-using System.Windows.Forms;
-
 namespace ConsoleMessageBox
 {
     /// <summary>
     /// Gibt alle Kommandozeilenparameter durch NewLine getrennt
     /// in einer MessageBox aus. Bei mehr als einem Kommandozeilenparameter
-    /// wird der letzte Ã¼bergebene Parameter fÃ¼r die Ãœberschrift der
+    /// wird der letzte übergebene Parameter für die Überschrift der
     /// MessageBox verwendet.
     /// </summary>
     /// <remarks>
@@ -23,7 +19,7 @@ namespace ConsoleMessageBox
             // DEBUG: MessageBox.Show(String.Join(" -|- ", args));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             string header;
             string msg = "";
             MessageBoxIcon icon;
@@ -44,7 +40,7 @@ namespace ConsoleMessageBox
             if (aufrufCounter < 0)
             {
                 header = "Entwarnung";
-                msg = "Das Problem ist behoben. Die ursprÃ¼ngliche Meldung war:";
+                msg = "Das Problem ist behoben. Die ursprüngliche Meldung war:";
                 delim = Environment.NewLine;
             }
             for (int i = 0; i < args.Length - 1; i++)
@@ -54,13 +50,13 @@ namespace ConsoleMessageBox
             }
             if (args.Length < 2)
             {
-                msg += delim + args[0]; // Es wurde nur die Meldung Ã¼bergeben.
+                msg += delim + args[0]; // Es wurde nur die Meldung übergeben.
             }
             else
             {
                 if (aufrufCounter >= 0)
                 {
-                    // letzter (User-)Parameter wird zur Ãœberschrift, wenn keine Entwarnung vorliegt.
+                    // letzter (User-)Parameter wird zur Überschrift, wenn keine Entwarnung vorliegt.
                     header = args[args.Length - 1];
                 }
             }
@@ -84,8 +80,8 @@ namespace ConsoleMessageBox
         private static void SyntaxAndOut(string message)
         {
             string intro = String.IsNullOrEmpty(message) ? "" : message + Environment.NewLine;
-            MessageBox.Show(intro + "Mit diesem Vishnu-Worker kÃ¶nnen Meldungen in einer MessageBox ausgegeben werden."
-                            + Environment.NewLine + String.Format($"Aufruf: {System.Windows.Forms.Application.ProductName} <Aufruf-ZÃ¤hler> <Tree-Info> <Node-Info> <TreeEvent-Info> [Nachricht-Zeile[0..n]] [Ãœberschrift]")
+            MessageBox.Show(intro + "Mit diesem Vishnu-Worker können Meldungen in einer MessageBox ausgegeben werden."
+                            + Environment.NewLine + String.Format($"Aufruf: {System.Windows.Forms.Application.ProductName} <Aufruf-Zähler> <Tree-Info> <Node-Info> <TreeEvent-Info> [Nachricht-Zeile[0..n]] [Überschrift]")
                             + Environment.NewLine + String.Format($"Beispiel: {System.Windows.Forms.Application.ProductName} -1 \"Tree 1\" \"Root\" \"Server-1: Root:False\" \"Info\""));
             Environment.Exit(0);
         }
