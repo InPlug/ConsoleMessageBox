@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
 		<!--RuntimeIdentifier>win-x64</RuntimeIdentifier-->
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
@@ -15,8 +15,8 @@
     <Company>NetEti</Company>
     <Description>$(AssemblyName) - zeigt ein Meldungsfenster für Kommandozeilen-Argumente.</Description>
     <Copyright>Copyright © $(Authors) 2013-2023</Copyright>
-    <AssemblyVersion>7.0.1.1</AssemblyVersion>
-    <FileVersion>7.0.1.1</FileVersion>
+    <AssemblyVersion>8.0.0.0</AssemblyVersion>
+    <FileVersion>8.0.0.0</FileVersion>
     <PackageTags>NetEti Vishnu Plugin Console MessageBox</PackageTags>
   </PropertyGroup>
 
