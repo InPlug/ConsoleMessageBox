@@ -1,3 +1,6 @@
+using System.Text;
+using NetEti.ApplicationEnvironment;
+
 namespace ConsoleMessageBox
 {
     /// <summary>
@@ -16,74 +19,108 @@ namespace ConsoleMessageBox
     {
         static void Main(string[] args)
         {
-            // DEBUG: MessageBox.Show(String.Join(" -|- ", args));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            string header;
-            string msg = "";
-            MessageBoxIcon icon;
-            string delim = "";
-            int aufrufCounter;
+            EvaluateParametersOrDie(args, out string message, out string caption, out MessageBoxButtons messageBoxButton, out MessageBoxIcon messageBoxIcon);
 
-            if (args.Length < 3)
-            {
-                SyntaxAndOut("");
-            }
-            if (!Int32.TryParse(args[0], out aufrufCounter))
-            {
-                SyntaxAndOut("Der AufrufCounter ist nicht numerisch!");
-            }
-            args = args.Skip(3).ToArray();
-            header = "Information";
-            icon = MessageBoxIcon.Information;
-            if (aufrufCounter < 0)
-            {
-                header = "Entwarnung";
-                msg = "Das Problem ist behoben. Die ursprüngliche Meldung war:";
-                delim = Environment.NewLine;
-            }
-            for (int i = 0; i < args.Length - 1; i++)
-            {
-                msg += delim + args[i];
-                delim = Environment.NewLine;
-            }
-            if (args.Length < 2)
-            {
-                msg += delim + args[0]; // Es wurde nur die Meldung übergeben.
-            }
-            else
-            {
-                if (aufrufCounter >= 0)
-                {
-                    // letzter (User-)Parameter wird zur Überschrift, wenn keine Entwarnung vorliegt.
-                    header = args[args.Length - 1];
-                }
-            }
-            if (header.ToUpper().Contains("ERROR") || header.ToUpper().Contains("FEHLER")
-                || header.ToUpper().Contains("EXCEPTION"))
-            {
-                icon = MessageBoxIcon.Error;
-            }
-            else
-            {
-                if (header.ToUpper().StartsWith("WARN"))
-                {
-                    header = "Warnung";
-                    icon = MessageBoxIcon.Exclamation;
-                }
-            }
-
-            MessageBox.Show(msg.Replace("#", Environment.NewLine), header, MessageBoxButtons.OK, icon);
+            MessageBox.Show(message, caption, messageBoxButton, messageBoxIcon);
         }
 
-        private static void SyntaxAndOut(string message)
+        private static void EvaluateParametersOrDie(string[] args, out string message, out string caption, out MessageBoxButtons messageBoxButton, out MessageBoxIcon messageBoxIcon)
         {
-            string intro = String.IsNullOrEmpty(message) ? "" : message + Environment.NewLine;
-            MessageBox.Show(intro + "Mit diesem Vishnu-Worker können Meldungen in einer MessageBox ausgegeben werden."
-                            + Environment.NewLine + String.Format($"Aufruf: {System.Windows.Forms.Application.ProductName} <Aufruf-Zähler> <Tree-Info> <Node-Info> <TreeEvent-Info> [Nachricht-Zeile[0..n]] [Überschrift]")
-                            + Environment.NewLine + String.Format($"Beispiel: {System.Windows.Forms.Application.ProductName} -1 \"Tree 1\" \"Root\" \"Server-1: Root:False\" \"Info\""));
-            Environment.Exit(0);
+            CommandLineAccess commandLineAccess = new();
+
+            messageBoxIcon = MessageBoxIcon.None;
+            messageBoxButton = MessageBoxButtons.OK;
+            string? tmpStr = commandLineAccess.GetStringValue("EscalationCounter", "0");
+            bool isResetting = Int32.TryParse(tmpStr, out int escalationCounter) && escalationCounter < 0;
+
+            caption = commandLineAccess.GetStringValue("Caption", "Information") ?? "Information";
+            StringBuilder sb = new StringBuilder();
+
+            string msg = commandLineAccess.GetStringValue("Message", null)
+                ?? Die<string>("Es muss ein Meldungstext mitgegeben werden.", commandLineAccess.CommandLine);
+
+            string resolvedPrefix = commandLineAccess.GetStringValue(
+                "ResolvedPrefix", "Das Problem ist behoben. Die ursprüngliche Meldung war:") ?? "";
+
+            tmpStr = commandLineAccess.GetStringValue("MessageNewLine", null);
+            string[] messageLines;
+            if (!String.IsNullOrEmpty(tmpStr))
+            {
+                messageLines = msg.Split(tmpStr);
+            }
+            else
+            {
+                messageLines = new string[1] { msg };
+            }
+            string delim = "";
+            for (int i = 0; i < messageLines.Count(); i++)
+            {
+                sb.Append(delim + messageLines[i]);
+                delim = Environment.NewLine;
+            }
+            message = sb.ToString();
+            if (isResetting)
+            {
+                message = resolvedPrefix
+                + Environment.NewLine
+                        + message;
+            }
+
+            messageBoxIcon = MessageBoxIcon.Information;
+            if (caption.ToUpper().Contains("ERROR") || caption.ToUpper().Contains("FEHLER")
+                || caption.ToUpper().Contains("EXCEPTION"))
+            {
+                messageBoxIcon = MessageBoxIcon.Error;
+            }
+            else
+            {
+                if (caption.ToUpper().StartsWith("WARN") == true)
+                {
+                    messageBoxIcon = MessageBoxIcon.Exclamation;
+                }
+            }
+            messageBoxButton = MessageBoxButtons.OK;
+
+            if (isResetting)
+            {
+                messageBoxIcon = MessageBoxIcon.Information;
+                caption = "(" + caption + ")";
+            }
         }
+
+        private static T Die<T>(string? message, string? commandLine = null)
+        {
+            string usage = "Syntax:"
+                + Environment.NewLine
+                + "\t-Message=<Nachricht>"
+                + Environment.NewLine
+                + "\t[-Caption=<Überschrift>]"
+                + Environment.NewLine
+                + "\t[-MessageNewLine=<NewLine-Kennung>]"
+                + Environment.NewLine
+                + "\t[-EscalationCounter={-n;+n} (negativ: Ursache behoben)]"
+                + Environment.NewLine
+                + "\t[-ResolvedPrefix=<Vorangestellter Kurztext bei negativem EscalationCounter>]"
+                + Environment.NewLine
+                + "Beispiel:"
+                + Environment.NewLine
+                + "\t-Message=\"Server-1:#Zugriffsproblem#Connection-Error...\""
+                + Environment.NewLine
+                + "\t-Caption=\"SQL-Exception\""
+                + Environment.NewLine
+                + "\t-ResolvedPrefix=\"No longer valid:\""
+                + Environment.NewLine
+                + "\t-MessageNewLine=\"#\"";
+            if (commandLine != null)
+            {
+                usage = "Kommandozeile: " + commandLine + Environment.NewLine + usage;
+            }
+            MessageBox.Show(message + Environment.NewLine + usage);
+            throw new ArgumentException(message + Environment.NewLine + usage);
+        }
+
     }
 }

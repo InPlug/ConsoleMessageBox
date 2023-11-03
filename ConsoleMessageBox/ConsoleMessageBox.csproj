@@ -15,8 +15,8 @@
     <Company>NetEti</Company>
     <Description>$(AssemblyName) - zeigt ein Meldungsfenster für Kommandozeilen-Argumente.</Description>
     <Copyright>Copyright © $(Authors) 2013-2023</Copyright>
-    <AssemblyVersion>8.0.0.0</AssemblyVersion>
-    <FileVersion>8.0.0.0</FileVersion>
+    <AssemblyVersion>8.0.1.0</AssemblyVersion>
+    <FileVersion>8.0.1.0</FileVersion>
     <PackageTags>NetEti Vishnu Plugin Console MessageBox</PackageTags>
   </PropertyGroup>
 
@@ -24,6 +24,11 @@
     <AssemblyRoot>$(ProjectDir)../../../ReadyBin/Assemblies</AssemblyRoot>
   </PropertyGroup>
   <Import Project="$(ProjectDir)../../AddOn/proj/*" Condition="exists('$(ProjectDir)../../AddOn/proj')" />
+  <ItemGroup>
+    <Reference Include="NetEti.CommandLineAccess">
+      <HintPath>..\..\..\ReadyBin\Assemblies\NetEti.CommandLineAccess.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
   <!--Target Name="SetNoBuild">
     <PropertyGroup>
