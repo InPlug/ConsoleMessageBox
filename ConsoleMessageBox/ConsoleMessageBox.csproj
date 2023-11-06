@@ -24,19 +24,20 @@
     <AssemblyRoot>$(ProjectDir)../../../ReadyBin/Assemblies</AssemblyRoot>
   </PropertyGroup>
   <Import Project="$(ProjectDir)../../AddOn/proj/*" Condition="exists('$(ProjectDir)../../AddOn/proj')" />
-  <ItemGroup>
-    <Reference Include="NetEti.CommandLineAccess">
-      <HintPath>..\..\..\ReadyBin\Assemblies\NetEti.CommandLineAccess.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+  
+	<Choose>
+  	<When Condition="!('$(TF_BUILD)' == 'true' Or '$(GITHUB_ACTIONS)' == 'true' Or '$(NETETI_CIB)' == 'true')">
+		  <ItemGroup>
+		    <Reference Include="NetEti.CommandLineAccess">
+		      <HintPath>$(AssemblyRoot)/NetEti.CommandLineAccess.dll</HintPath>
+		    </Reference>
+		  </ItemGroup>
+  	</When>
+    <Otherwise>
+		  <ItemGroup>
+		    <PackageReference Include="NetEti.CommandLineAccess" Version="1.0.0" />
+		  </ItemGroup>
+    </Otherwise>
+	</Choose>
 
-  <!--Target Name="SetNoBuild">
-    <PropertyGroup>
-      <NoBuild>true</NoBuild>
-    </PropertyGroup>
-  </Target>
-  <Target Name="PublishAfterBuild" AfterTargets="AfterBuild" DependsOnTargets="SetNoBuild;Publish" />
-  <Target Name="CleanAfterBuild" AfterTargets="AfterClean">
-    <RemoveDir Directories="$(PublishDir)" Condition="'$(PublishDir)' != ''"/>
-  </Target-->
 </Project>
